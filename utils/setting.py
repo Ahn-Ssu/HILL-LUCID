@@ -1,12 +1,12 @@
-import time
-
 from arena_api.system import system
-
 
 def set_default(device=None):
 
+    if device==None:
+        raise Exception(f'No device found! Please connect a device and run '
+                        f'the function again.')
+
     # Reset to default user set
-    print(device.nodemap['UserSetSelector'].value)
     device.nodemap['UserSetSelector'].value = 'Default'
     device.nodemap['UserSetLoad'].execute()
     print('Device settings has been reset to \'Default\' user set')
