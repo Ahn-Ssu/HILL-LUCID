@@ -68,4 +68,4 @@ if __name__ == '__main__':
         print("\t"+"-"*40)
 
     destroy_deviceConnection(deviceList)
-    print("Code Test: Create and Destroy clear")
+    print("\nCode Test: Create and Destroy clear\n")
