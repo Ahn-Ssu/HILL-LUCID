@@ -46,6 +46,7 @@ def destroy_deviceConnection(device: Union[Iterable[arena_api._device.Device],ar
         raise Exception(f'No device found! Please assign a device and run '
                         f'the function again.')
     
+    system.destroy_device() # for computer RSS 
     print(f"destroyed the device. We've recovered the resources.")
 
 
