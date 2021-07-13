@@ -1,4 +1,5 @@
 import time
+import arena_api
 
 from arena_api.system import system
 
@@ -32,8 +33,12 @@ def create_devices_with_tries():
 
 
 def destroy_deviceConnection(device=None):
-    if device :
+    if isinstance(device, arena_api._device.Device) : # device in list
         system.destroy_device(device)
+        print("is device type")
+    elif isinstance(device, list) and isinstance(device[0], arena_api._device.Device):
+        system.destroy_device(device[0])
+        print("is list")
     else:
         raise Exception(f'No device found! Please assign a device and run '
                         f'the function again.')
