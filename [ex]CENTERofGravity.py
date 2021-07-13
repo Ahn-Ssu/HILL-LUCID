@@ -1,6 +1,7 @@
 import cv2
 
-src = cv2.imread("Image/convex.png")
+src = cv2.imread("/Users/ahnssu/git/HILL-LUCID/img4CoG.png")
+# src = cv2.imread("C:\\Users\\seung\\git\HILL-LUCID\\img4CoG.png")
 dst = src.copy()
 
 gray = cv2.cvtColor(src, cv2.COLOR_RGB2GRAY)
