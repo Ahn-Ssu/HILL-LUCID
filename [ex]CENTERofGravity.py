@@ -1,52 +1,21 @@
 import cv2
-import numpy as np
 
-def find_centerOfGravity(
-    srcImg : np
-    )-> np:
+src = cv2.imread("Image/convex.png")
+dst = src.copy()
 
-    targetImg = srcImg.copy()
+gray = cv2.cvtColor(src, cv2.COLOR_RGB2GRAY)
+ret, binary = cv2.threshold(gray, 150, 255, cv2.THRESH_BINARY_INV)
 
-    grayScaled = cv2.cvtColor(targetImg, cv2.COLOR_BGR2GRAY) 
-    _, binary = cv2.threshold(grayScaled, 150, 255, cv2.THRESH_BINARY_INV)
+contours, hierarchy = cv2.findContours(binary, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_NONE)
 
-
-    # M = cv2.moments(binary)
-    # cX = int(M['m10'] / M['m00'])
-    # cY = int(M['m01'] / M['m00'])
+for i in contours:
+    M = cv2.moments(i)
+    cX = int(M['m10'] / M['m00'])
+    cY = int(M['m01'] / M['m00'])
     
-    # cv2.circle(srcImg, (cX, cY), 3, (255, 0, 0), -1)
+    cv2.circle(dst, (cX, cY), 3, (255, 0, 0), -1)
+    cv2.drawContours(dst, [i], 0, (0, 0, 255), 2)
 
-    contours, hierarchy = cv2.findContours(binary, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_NONE)
-
-    for i in contours:
-        M = cv2.moments(i)
-        cX = int(M['m10'] / M['m00'])
-        cY = int(M['m01'] / M['m00'])
-        
-        cv2.drawMarker(srcImg, (cX, cY), 3, (255, 0, 0), markerType=cv2.MARKER_CROSS)
-        # cv2.drawMarker(srcImg, (cX, cY), 3, (255, 0, 0), markerType=cv2.MARKER_TILTED_CROSS)
-        cv2.drawContours(srcImg, [i], 0, (0, 0, 255), 2)
-
-    return srcImg
-
-
-
-import cv2
-from utils.createDeviceConnection import *
-from utils.imgRead import *
-
-
-
-devList = create_devices_with_tries()
-myDev = devList[0]
-
-configure_some_nodes(myDev)
-
-while cv2.waitKey(33)<0:
-    img = read_imgData(myDev)
-    COG = find_centerOfGravity(img)
-    cv2.imshow("np to", COG)
-    
-
-destroy_deviceConnection(myDev)
+cv2.imshow("dst", dst)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
