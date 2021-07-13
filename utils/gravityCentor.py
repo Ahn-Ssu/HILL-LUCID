@@ -29,24 +29,3 @@ def find_centerOfGravity(
         cv2.drawContours(srcImg, [i], 0, (0, 0, 255), 2)
 
     return srcImg
-
-
-
-import cv2
-from utils.createDeviceConnection import *
-from utils.imgRead import *
-
-
-
-devList = create_devices_with_tries()
-myDev = devList[0]
-
-configure_some_nodes(myDev)
-
-while cv2.waitKey(33)<0:
-    img = read_imgData(myDev)
-    COG = find_centerOfGravity(img)
-    cv2.imshow("np to", COG)
-    
-
-destroy_deviceConnection(myDev)
