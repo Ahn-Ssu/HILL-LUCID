@@ -2,7 +2,6 @@ from typing import NoReturn, Optional
 import arena_api
 from arena_api import enums
 from arena_api.buffer import BufferFactory
-from arena_api.system import system
 import numpy as np
 
 def configure_some_nodes(
@@ -49,7 +48,7 @@ def convert_Format(
     print('Converting image buffer pixel format to {}'.format(str(pixelFormat)))
     return BufferFactory.convert(buffer, pixelFormat)
     
-def read_img(
+def read_imgData(
     device: arena_api._device.Device
     )->np:
     
@@ -73,9 +72,9 @@ def read_img(
     data = buffer.data
     width = buffer.width
     height = buffer.height
-    
+
     np_array = np.asarray(data, dtype=np.uint8)
-    np_array = np_array.reshape(height,width,-1)
+    np_array = np_array.reshape(height,width,-1) # -1 is the Channel depth
     
     BufferFactory.destroy(buffer)
 
@@ -92,10 +91,11 @@ if __name__ == '__main__' :
 
     configure_some_nodes(nodemap=myDevice.nodemap, stream_nodemap=myDevice.tl_stream_nodemap)
     
-    ret = read_img(device= myDevice)
+    ret = read_imgData(device= myDevice)
     print(ret.shape)
     print(ret)
 
 
 
     destroy_deviceConnection(devList)
+    print("Test Done: get img data ")
