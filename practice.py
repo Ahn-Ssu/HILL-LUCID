@@ -10,7 +10,7 @@ myDev = devList[0]
 configure_some_nodes(myDev)
 
 while cv2.waitKey(33)<0:
-    img = read_imgData()
+    img = read_imgData(myDev)
     cv2.imshow("np to", img)
     
 
