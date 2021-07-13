@@ -46,14 +46,7 @@ def convert_Format(
     pixelFormat:arena_api.enums=enums.PixelFormat.BGR8
     )->arena_api.buffer._Buffer:
 
-    # Optional:
-    # The pixel format can be checked to a void conversion if possible:
-    # Code:
-    '''
-    if buffer.pixel_format == enums.PixelFormat.BGR8:
-        return buffer
-    '''
-    print('Converting image buffer pixel format to {}'.format(pixelFormat))
+    print('Converting image buffer pixel format to {}'.format(str(pixelFormat)))
     return BufferFactory.convert(buffer, pixelFormat)
     
 def read_img(
@@ -77,16 +70,12 @@ def read_img(
 
     # Create a Numpy array to pass to PIL.Image
     print('Creating 3 dimensional Numpy array')
-    buffer_BGR8_data = buffer.data
-    buffer_BGR8_width = buffer.width
-    buffer_BGR8_height = buffer.height
-    buffer_BGR8_bytes_per_pixel = int(
-        len(buffer_BGR8_data)/(buffer_BGR8_width * buffer_BGR8_height))
-    np_array = np.asarray(buffer_BGR8_data, dtype=np.uint8)
-    np_array = np_array.reshape(buffer_BGR8_height,
-                                buffer_BGR8_width,
-                                buffer_BGR8_bytes_per_pixel)
-    # BGR = RGB
+    data = buffer.data
+    width = buffer.width
+    height = buffer.height
+    
+    np_array = np.asarray(data, dtype=np.uint8)
+    np_array = np_array.reshape(height,width,-1)
     
     BufferFactory.destroy(buffer)
 
