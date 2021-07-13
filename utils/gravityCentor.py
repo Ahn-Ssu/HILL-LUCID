@@ -24,7 +24,7 @@ def find_centerOfGravity(
         cX = int(M['m10'] / M['m00'])
         cY = int(M['m01'] / M['m00'])
         
-        cv2.drawMarker(srcImg, (cX, cY), 3, (255, 0, 0), markerType=cv2.MARKER_CROSS)
+        cv2.drawMarker(srcImg, (cX, cY), (255, 0, 0), markerType=cv2.MARKER_CROSS)
         # cv2.drawMarker(srcImg, (cX, cY), 3, (255, 0, 0), markerType=cv2.MARKER_TILTED_CROSS)
         cv2.drawContours(srcImg, [i], 0, (0, 0, 255), 2)
 
