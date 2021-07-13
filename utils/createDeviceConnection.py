@@ -54,14 +54,14 @@ if __name__ == '__main__':
     deviceList = create_devices_with_tries()
     print("system.device_infos ===> {}".format(system.device_infos))
     #property
-    for idx, device in 
-    print("{} : DEFAULT_NUM_BUFFERS {}".format(idx, device.DEFAULT_NUM_BUFFERS))
-    print("{} :GET_BUFFER_TIMEOUT_MILLISEC {}".format(idx, device.GET_BUFFER_TIMEOUT_MILLISEC))
-    print("{} :WAIT_ON_EVENT_TIMEOUT_MILLISEC {}".format(idx, device.WAIT_ON_EVENT_TIMEOUT_MILLISEC))
-    print("{} :nodemap {}".format(idx, device.nodemap))
-    print("{} :tl_device_nodemap {}".format(idx, device.tl_device_nodemap))
-    print("{} :tl_interface_nodemap {}".format(idx, device.tl_interface_nodemap))
-    print("{} :tl_stream_nodemap {}".format(idx, device.tl_stream_nodemap))
+    for idx, device in deviceList:
+        print("{} : DEFAULT_NUM_BUFFERS {}".format(idx, device.DEFAULT_NUM_BUFFERS))
+        print("{} :GET_BUFFER_TIMEOUT_MILLISEC {}".format(idx, device.GET_BUFFER_TIMEOUT_MILLISEC))
+        print("{} :WAIT_ON_EVENT_TIMEOUT_MILLISEC {}".format(idx, device.WAIT_ON_EVENT_TIMEOUT_MILLISEC))
+        print("{} :nodemap {}".format(idx, device.nodemap))
+        print("{} :tl_device_nodemap {}".format(idx, device.tl_device_nodemap))
+        print("{} :tl_interface_nodemap {}".format(idx, device.tl_interface_nodemap))
+        print("{} :tl_stream_nodemap {}".format(idx, device.tl_stream_nodemap))
     # system.tl_system_nodemap
     # system.tl_interface_nodemap
     # device.tl_device_nodemap
