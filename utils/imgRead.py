@@ -41,7 +41,10 @@ def configure_some_nodes(
     print(f'Setting \'PixelFormat\' to \'{new_pixel_format}\'')
     nodes['PixelFormat'].value = new_pixel_format
 
-def convert_buffer_to_BGR8(buffer):
+def convert_Format(
+    buffer:arena_api.buffer._Buffer,
+    pixelFormat:arena_api.enums=enums.PixelFormat.BGR8
+    )->arena_api.buffer._Buffer:
 
     # Optional:
     # The pixel format can be checked to a void conversion if possible:
@@ -50,8 +53,8 @@ def convert_buffer_to_BGR8(buffer):
     if buffer.pixel_format == enums.PixelFormat.BGR8:
         return buffer
     '''
-    print('Converting image buffer pixel format to BGR8 ')
-    return BufferFactory.convert(buffer, enums.PixelFormat.BGR8)
+    print('Converting image buffer pixel format to {}'.format(pixelFormat))
+    return BufferFactory.convert(buffer, pixelFormat)
     
 def read_img(
     device: arena_api._device.Device
@@ -66,7 +69,7 @@ def read_img(
         device_buffer = device.get_buffer()
 
         # Convert to tkinter recognizable pixel format
-        buffer = convert_buffer_to_BGR8(device_buffer)
+        buffer = convert_Format(device_buffer)
 
         # Requeue to release buffer memory
         print('Requeuing device buffer')
@@ -83,6 +86,7 @@ def read_img(
     np_array = np_array.reshape(buffer_BGR8_height,
                                 buffer_BGR8_width,
                                 buffer_BGR8_bytes_per_pixel)
+    # BGR = RGB
     
     BufferFactory.destroy(buffer)
 
