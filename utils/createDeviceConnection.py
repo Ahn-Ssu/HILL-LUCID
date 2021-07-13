@@ -44,6 +44,7 @@ if __name__ == '__main__':
     myDev = create_devices_with_tries()
     print(myDev)
     print(type(myDev))
+    print(type(myDev[0]))
     print()
     destroy_deviceConnection(myDev)
     print("done")
