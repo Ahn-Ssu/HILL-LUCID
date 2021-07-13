@@ -54,7 +54,7 @@ if __name__ == '__main__':
     deviceList = create_devices_with_tries()
     print("system.device_infos ===> {}".format(system.device_infos))
     #property
-    for idx, device in deviceList:
+    for idx, device in enumerate(deviceList):
         print("{} : DEFAULT_NUM_BUFFERS {}".format(idx, device.DEFAULT_NUM_BUFFERS))
         print("{} :GET_BUFFER_TIMEOUT_MILLISEC {}".format(idx, device.GET_BUFFER_TIMEOUT_MILLISEC))
         print("{} :WAIT_ON_EVENT_TIMEOUT_MILLISEC {}".format(idx, device.WAIT_ON_EVENT_TIMEOUT_MILLISEC))
