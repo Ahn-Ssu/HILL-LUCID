@@ -36,8 +36,14 @@ def destroy_deviceConnection(device=None):
         system.destroy_device(device)
     else:
         raise Exception(f'No device found! Please assign a device and run '
-                        f'the example again.')
+                        f'the function again.')
 
 
 if __name__ == '__main__':
-    destroy_deviceConnection() # empty test
+    # destroy_deviceConnection() # empty test
+    myDev = create_devices_with_tries()
+    print(myDev)
+    print(type(myDev))
+    print()
+    destroy_deviceConnection(myDev)
+    print("done")
