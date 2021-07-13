@@ -1,10 +1,10 @@
 import time
 import arena_api
-
+from typing import Union, Iterable, NoReturn
 from arena_api.system import system
 
 
-def create_devices_with_tries():
+def create_devices_with_tries() -> Iterable[arena_api._device.Device]:
     """
     This function waits for the user to connect a device before raising
     an exception
@@ -33,7 +33,7 @@ def create_devices_with_tries():
                         f'the example again.')
 
 
-def destroy_deviceConnection(device=None):
+def destroy_deviceConnection(device: Union[Iterable[arena_api._device.Device],arena_api._device.Device]) -> NoReturn:
     # for arena_api Device instance
     if isinstance(device, arena_api._device.Device) : # device in list
         system.destroy_device(device)

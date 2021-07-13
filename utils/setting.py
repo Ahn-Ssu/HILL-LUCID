@@ -1,6 +1,8 @@
+import arena_api
 from arena_api.system import system
+from typing import NoReturn
 
-def set_default(device=None):
+def set_default(device : arena_api._device.Device) -> NoReturn:
 
     if device==None:
         raise Exception(f'No device found! Please connect a device and run '
