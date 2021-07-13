@@ -1,5 +1,17 @@
-from arena_api.system import system
+import cv2
+from utils.createDeviceConnection import *
+from utils.imgRead import *
 
 
-print(system.device_infos)
-print(system.create_device())
+
+devList = create_devices_with_tries()
+myDev = devList[0]
+
+configure_some_nodes(myDev)
+
+while cv2.waitKey(33)<0:
+    img = read_imgData()
+    cv2.imshow("np to", img)
+    
+
+destroy_deviceConnection(myDev)

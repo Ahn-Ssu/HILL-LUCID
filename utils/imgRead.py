@@ -5,12 +5,14 @@ from arena_api.buffer import BufferFactory
 import numpy as np
 
 def configure_some_nodes(
-    nodemap:arena_api._nodemap.Nodemap,
-    stream_nodemap:arena_api._nodemap.Nodemap,
+    device:arena_api._device.Device,
     width:Optional[int] = None,
     heigth:Optional[int] = None,
     pixelFormat:Optional[str] = 'Mono8'
     )->NoReturn:
+
+    nodemap=device.nodemap
+    stream_nodemap=device.tl_stream_nodemap
 
     # Enable stream auto negotiate packet size
     stream_nodemap['StreamAutoNegotiatePacketSize'].value = True
