@@ -55,13 +55,15 @@ if __name__ == '__main__':
     print("system.device_infos ===> {}".format(system.device_infos))
     #property
     for idx, device in enumerate(deviceList):
-        print("{} : DEFAULT_NUM_BUFFERS {}".format(idx, device.DEFAULT_NUM_BUFFERS))
-        print("{} :GET_BUFFER_TIMEOUT_MILLISEC {}".format(idx, device.GET_BUFFER_TIMEOUT_MILLISEC))
-        print("{} :WAIT_ON_EVENT_TIMEOUT_MILLISEC {}".format(idx, device.WAIT_ON_EVENT_TIMEOUT_MILLISEC))
-        print("{} :nodemap {}".format(idx, len(device.nodemap)))
-        print("{} :tl_device_nodemap list length {}".format(idx, len(device.tl_device_nodemap)))
-        print("{} :tl_interface_nodemap list length{}".format(idx, len(device.tl_interface_nodemap)))
-        print("{} :tl_stream_nodemap list length{}".format(idx, len(device.tl_stream_nodemap)))
+        print("{}: DEFAULT_NUM_BUFFERS {}".format(idx, device.DEFAULT_NUM_BUFFERS))
+        print("{}: GET_BUFFER_TIMEOUT_MILLISEC {}".format(idx, device.GET_BUFFER_TIMEOUT_MILLISEC))
+        print("{}: WAIT_ON_EVENT_TIMEOUT_MILLISEC {}".format(idx, device.WAIT_ON_EVENT_TIMEOUT_MILLISEC))
+        print(device.nodemap)
+        print(list(device.nodemap))
+        # print("{}: nodemap {}".format(idx, len(device.nodemap)))
+        # print("{}: tl_device_nodemap list length {}".format(idx, len(device.tl_device_nodemap)))
+        # print("{}: tl_interface_nodemap list length{}".format(idx, len(device.tl_interface_nodemap)))
+        # print("{}: tl_stream_nodemap list length{}".format(idx, len(device.tl_stream_nodemap)))
     # system.tl_system_nodemap
     # system.tl_interface_nodemap
     # device.tl_device_nodemap
