@@ -1,5 +1,6 @@
 from typing import NoReturn, Optional
 import arena_api
+from arena_api import enums
 from arena_api.buffer import BufferFactory
 from arena_api.system import system
 import numpy as np
@@ -40,6 +41,18 @@ def configure_some_nodes(
     print(f'Setting \'PixelFormat\' to \'{new_pixel_format}\'')
     nodes['PixelFormat'].value = new_pixel_format
 
+def convert_buffer_to_BGR8(buffer):
+
+    # Optional:
+    # The pixel format can be checked to a void conversion if possible:
+    # Code:
+    '''
+    if buffer.pixel_format == enums.PixelFormat.BGR8:
+        return buffer
+    '''
+    print('Converting image buffer pixel format to BGR8 ')
+    return BufferFactory.convert(buffer, enums.PixelFormat.BGR8)
+    
 def read_img(
     device: arena_api._device.Device
     )->np:
@@ -53,8 +66,7 @@ def read_img(
         device_buffer = device.get_buffer()
 
         # Convert to tkinter recognizable pixel format
-        # buffer = convert_buffer_to_BGR8(device_buffer)
-        buffer = device_buffer 
+        buffer = convert_buffer_to_BGR8(device_buffer)
 
         # Requeue to release buffer memory
         print('Requeuing device buffer')
