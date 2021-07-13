@@ -13,7 +13,8 @@ def create_devices_with_tries():
     tries = 0
     tries_max = 6
     sleep_time_secs = 10
-    while tries < tries_max:  # Wait for device for sleepTime*tries_max seconds
+    # Wait for device for sleepTime*tries_max seconds
+    while tries < tries_max:  
         devices = system.create_device()
         if not devices:
             print(
@@ -22,7 +23,7 @@ def create_devices_with_tries():
             for sec_count in range(sleep_time_secs):
                 time.sleep(1)
                 print(f'{sec_count + 1 } seconds passed ',
-                      '.' * sec_count, end='\r')
+                      '∎' * sec_count, end='\r')
             tries += 1
         else:
             print(f'Created {len(devices)} device(s)')
@@ -37,8 +38,10 @@ def destroy_deviceConnection(device=None):
     if isinstance(device, arena_api._device.Device) : # device in list
         system.destroy_device(device)
     # for arena_api Device instance in list (from create_device API)
-    elif isinstance(device, list) and isinstance(device[0], arena_api._device.Device):
-        system.destroy_device(device[0])
+    elif isinstance(device, list):
+        for dev in device:
+            if isinstance(dev, arena_api._device.Device):
+                system.destroy_device(dev)
     else:
         raise Exception(f'No device found! Please assign a device and run '
                         f'the function again.')
@@ -48,10 +51,21 @@ def destroy_deviceConnection(device=None):
 
 if __name__ == '__main__':
     # destroy_deviceConnection() # empty test
-    myDev = create_devices_with_tries()
-    print(myDev)
-    print(type(myDev))
-    print(type(myDev[0]))
-    print()
-    destroy_deviceConnection(myDev)
-    print("done")
+    deviceList = create_devices_with_tries()
+    print("system.device_infos ===> {}".format(system.device_infos))
+    #property
+    for idx, device in 
+    print("{} : DEFAULT_NUM_BUFFERS {}".format(idx, device.DEFAULT_NUM_BUFFERS))
+    print("{} :GET_BUFFER_TIMEOUT_MILLISEC {}".format(idx, device.GET_BUFFER_TIMEOUT_MILLISEC))
+    print("{} :WAIT_ON_EVENT_TIMEOUT_MILLISEC {}".format(idx, device.WAIT_ON_EVENT_TIMEOUT_MILLISEC))
+    print("{} :nodemap {}".format(idx, device.nodemap))
+    print("{} :tl_device_nodemap {}".format(idx, device.tl_device_nodemap))
+    print("{} :tl_interface_nodemap {}".format(idx, device.tl_interface_nodemap))
+    print("{} :tl_stream_nodemap {}".format(idx, device.tl_stream_nodemap))
+    # system.tl_system_nodemap
+    # system.tl_interface_nodemap
+    # device.tl_device_nodemap
+    # device.tl_stream_nodemap
+    # device.tl_interface_nodemap
+    destroy_deviceConnection(deviceList)
+    print("Code Test: Create and Destroy clear")
