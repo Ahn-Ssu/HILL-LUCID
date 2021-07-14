@@ -91,14 +91,14 @@ def read_imgData(
             BufferFactory.destroy(buffer)
         return arrayList
             
-    data = buffer.data
-    width = buffer.width
-    height = buffer.height
+    data = buffers.data
+    width = buffers.width
+    height = buffers.height
 
     np_array = np.asarray(data, dtype=np.uint8)
     np_array = np_array.reshape(height,width,-1) # -1 is the Channel depth
     
-    BufferFactory.destroy(buffer)
+    BufferFactory.destroy(buffers)
 
     return np_array
 
