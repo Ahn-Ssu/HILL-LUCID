@@ -51,16 +51,17 @@ def convert_Format(
     return BufferFactory.convert(buffer, pixelFormat)
     
 def read_imgData(
-    device: arena_api._device.Device
-    )->np:
+    device: arena_api._device.Device,
+    bufferNum: Optional[int]=1
+    )->np.ndarray:
     
     buffer = None
-    with device.start_stream(1):
-        print(f'Stream started with 1 buffer')
+    with device.start_stream(bufferNum):
+        print('Stream started with {} buffer'.format(bufferNum))
 
         # 'Device.get_buffer()' with no arguments returns only one buffer
-        print('\tGetting one buffer')
-        device_buffer = device.get_buffer()
+        print('\tGetting {} buffer'.format(bufferNum))
+        device_buffer = device.get_buffer(bufferNum)
 
         # Convert to tkinter recognizable pixel format
         buffer = convert_Format(device_buffer)
@@ -91,9 +92,9 @@ if __name__ == '__main__' :
 
     myDevice = devList[0]
 
-    configure_some_nodes(nodemap=myDevice.nodemap, stream_nodemap=myDevice.tl_stream_nodemap)
+    configure_some_nodes(myDevice)
     
-    ret = read_imgData(device= myDevice)
+    ret = read_imgData(device=myDevice)
     print(ret.shape)
     print(ret)
 
