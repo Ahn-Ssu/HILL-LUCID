@@ -98,7 +98,7 @@ if __name__ == '__main__' :
 
     myDevice = devList[0]
 
-    configure_some_nodes(nodemap=myDevice.nodemap, stream_nodemap=myDevice.tl_stream_nodemap)
+    configure_some_nodes(myDevice)
     
     ret = read_imgData(device= myDevice)
     print(ret.shape)
