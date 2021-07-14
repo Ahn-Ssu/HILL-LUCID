@@ -1,11 +1,11 @@
-from typing import NoReturn, Optional
-import arena_api._device
+from typing import Iterable, NoReturn, Optional
+from arena_api import _device,buffer
 from arena_api import enums
 from arena_api.buffer import BufferFactory
 import numpy as np
 
 def configure_some_nodes(
-    device:arena_api._device.Device,
+    device:_device.Device,
     width:Optional[int] = None,
     heigth:Optional[int] = None,
     pixelFormat:Optional[str] = 'Mono8'
@@ -43,17 +43,22 @@ def configure_some_nodes(
     nodes['PixelFormat'].value = new_pixel_format
 
 def convert_Format(
-    buffer:arena_api.buffer._Buffer,
-    pixelFormat:arena_api.enums=enums.PixelFormat.BGR8
-    )->arena_api.buffer._Buffer:
+    buffers:Union[buffer._Buffer,Iterable[buffer._Buffer]],
+    pixelFormat:enums=enums.PixelFormat.BGR8
+    )->Union[buffer._Buffer,Iterable[buffer._Buffer]]:
 
     print('Converting image buffer pixel format to {}'.format(str(pixelFormat)))
-    return BufferFactory.convert(buffer, pixelFormat)
+    if isinstance(buffers, Iterable):
+        for buffer in buffers:
+           BufferFactory.convert(buffer, pixelFormat)
+    else:
+        BufferFactory.convert(buffers, pixelFormat) 
+    return buffers
     
 def read_imgData(
-    device: arena_api._device.Device,
+    device: _device.Device,
     bufferNum: Optional[int]=1
-    )->np.ndarray:
+    )->Union[np.ndarray,Iterable[np.ndarray]]:
     
     buffer = None
     with device.start_stream(bufferNum):
@@ -64,7 +69,7 @@ def read_imgData(
         device_buffer = device.get_buffer(bufferNum)
 
         # Convert to tkinter recognizable pixel format
-        buffer = convert_Format(device_buffer)
+        buffers = convert_Format(device_buffer)
 
         # Requeue to release buffer memory
         print('Requeuing device buffer')
@@ -72,6 +77,20 @@ def read_imgData(
 
     # Create a Numpy array to pass to PIL.Image
     print('Creating 3 dimensional Numpy array')
+    if isinstance(buffers, Iterable):
+        arrayList = []
+        for buffer in buffers:
+            data = buffer.data
+            width = buffer.width
+            height = buffer.height
+
+            np_array = np.asarray(data, dtype=np.uint8)
+            np_array = np_array.reshape(height,width,-1) # -1 is the Channel depth
+            
+            arrayList.append(np_array)
+            BufferFactory.destroy(buffer)
+        return arrayList
+            
     data = buffer.data
     width = buffer.width
     height = buffer.height
