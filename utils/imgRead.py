@@ -1,5 +1,5 @@
 from typing import NoReturn, Optional
-import arena_api
+import arena_api._device
 from arena_api import enums
 from arena_api.buffer import BufferFactory
 import numpy as np
