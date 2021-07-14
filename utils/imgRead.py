@@ -61,7 +61,7 @@ def read_imgData(
     )->np:
     
     buffer = None
-    bufferNumber = 30
+    # bufferNumber = 30
     with device.start_stream(bufferNumber):
         print('Stream started with {} buffer'.format(bufferNumber))
 
@@ -86,8 +86,10 @@ def read_imgData(
             height = buffer.height
             np_array = np.asarray(data, dtype=np.uint8)
             np_array = np_array.reshape(height,width,-1) # -1 is the Channel depth
+            
+            BufferFactory.destroy(buffer)
             arrays.append(np_array)
-        BufferFactory.destroy(buffers)
+        
 
         return arrays
 
