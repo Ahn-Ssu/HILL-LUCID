@@ -43,24 +43,31 @@ def configure_some_nodes(
     nodes['PixelFormat'].value = new_pixel_format
 
 def convert_Format(
-    buffer:arena_api.buffer._Buffer,
+    buffers:Union[Iterable[arena_api.buffer._Buffer],arena_api.buffer._Buffer],
     pixelFormat:arena_api.enums=enums.PixelFormat.BGR8
     )->arena_api.buffer._Buffer:
 
     print('Converting image buffer pixel format to {}'.format(str(pixelFormat)))
-    return BufferFactory.convert(buffer, pixelFormat)
+    if isinstance(buffers, Iterable):
+        for buffer in buffers:
+           BufferFactory.convert(buffer, pixelFormat)
+    else:
+        BufferFactory.convert(buffers, pixelFormat) 
+    return buffers
     
 def read_imgData(
-    device: arena_api._device.Device
+    device: arena_api._device.Device,
+    bufferNumber : Optional[int]=1
     )->np:
     
     buffer = None
-    with device.start_stream(1):
-        print(f'Stream started with 1 buffer')
+    bufferNumber = 30
+    with device.start_stream(bufferNumber):
+        print('Stream started with {} buffer'.format(bufferNumber))
 
         # 'Device.get_buffer()' with no arguments returns only one buffer
-        print('\tGetting one buffer')
-        device_buffer = device.get_buffer()
+        print('\tGetting {} buffer'.format(bufferNumber))
+        device_buffer = device.get_buffer(bufferNumber)
 
         # Convert to tkinter recognizable pixel format
         buffer = convert_Format(device_buffer)
