@@ -101,6 +101,7 @@ def read_imgData(
     np_array = np_array.reshape(height,width,-1)
     
     BufferFactory.destroy(buffers)
+    print(type(np_array))
 
     return np_array
 
