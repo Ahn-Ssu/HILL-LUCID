@@ -70,7 +70,7 @@ def read_imgData(
         device_buffer = device.get_buffer(bufferNumber)
 
         # Convert to tkinter recognizable pixel format
-        buffer = convert_Format(device_buffer)
+        buffers = convert_Format(device_buffer)
 
         # Requeue to release buffer memory
         print('Requeuing device buffer')
@@ -78,14 +78,27 @@ def read_imgData(
 
     # Create a Numpy array to pass to PIL.Image
     print('Creating 3 dimensional Numpy array')
-    data = buffer.data
-    width = buffer.width
-    height = buffer.height
+    if isinstance(buffers, Iterable):
+        arrays = []
+        for buffer in buffers:
+            data = buffer.data
+            width = buffer.width
+            height = buffer.height
+            np_array = np.asarray(data, dtype=np.uint8)
+            np_array = np_array.reshape(height,width,-1) # -1 is the Channel depth
+            arrays.append(np_array)
+        BufferFactory.destroy(buffers)
+
+        return arrays
+
+    data = buffers.data
+    width = buffers.width
+    height = buffers.height
 
     np_array = np.asarray(data, dtype=np.uint8)
-    np_array = np_array.reshape(height,width,-1) # -1 is the Channel depth
+    np_array = np_array.reshape(height,width,-1)
     
-    BufferFactory.destroy(buffer)
+    BufferFactory.destroy(buffers)
 
     return np_array
 
