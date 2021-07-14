@@ -33,7 +33,7 @@ def create_devices_with_tries() -> Iterable[arena_api._device.Device]:
                         f'the example again.')
 
 
-def destroy_deviceConnection(device: Union[Iterable[arena_api._device.Device],arena_api._device.Device]) -> NoReturn:
+def destroy_deviceConnection(device: Union[Iterable[arena_api._device.Device],arena_api._device.Device]):
     # for arena_api Device instance
     if isinstance(device, arena_api._device.Device) : # device in list
         system.destroy_device(device)

@@ -9,7 +9,7 @@ def configure_some_nodes(
     width:Optional[int] = None,
     heigth:Optional[int] = None,
     pixelFormat:Optional[str] = 'Mono8'
-    )->NoReturn:
+    ):
 
     nodemap=device.nodemap
     stream_nodemap=device.tl_stream_nodemap

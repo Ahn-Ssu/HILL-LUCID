@@ -2,8 +2,8 @@ import cv2
 import numpy as np
 
 def find_centerOfGravity(
-    srcImg : np
-    )-> np:
+    srcImg : np.ndarray
+    )-> np.ndarray:
 
     targetImg = srcImg.copy()
 
