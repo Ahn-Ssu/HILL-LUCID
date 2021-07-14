@@ -1,4 +1,4 @@
-from typing import NoReturn, Optional, Union
+from typing import NoReturn, Optional, Union, Iterable
 import arena_api._device
 from arena_api import enums
 from arena_api.buffer import BufferFactory
