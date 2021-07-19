@@ -61,7 +61,6 @@ def read_imgData(
     )->np.ndarray:
     
     buffer = None
-    bufferNumber = 30
     with device.start_stream(bufferNumber):
         print('Stream started with {} buffer'.format(bufferNumber))
 
@@ -82,9 +81,15 @@ def read_imgData(
     data = buffer.data
     width = buffer.width
     height = buffer.height
+    print(f'data type = {type(data)}')
+    print(f'width type = {type(width)}')
+    print(f'height type = {type(height)}')
+
 
     np_array = np.asarray(data, dtype=np.uint8)
     np_array = np_array.reshape(height,width,-1) # -1 is the Channel depth
+    print(f'np_array type = {type(np_array)}')
+
     
     BufferFactory.destroy(buffer)
 
@@ -114,13 +119,11 @@ if __name__ == '__main__' :
 
     myDevice = devList[0]
 
-    configure_some_nodes(nodemap=myDevice.nodemap, stream_nodemap=myDevice.tl_stream_nodemap)
+    configure_some_nodes(device=myDevice)
     
     ret = read_imgData(device= myDevice)
     print(ret.shape)
     print(ret)
-
-
 
     destroy_deviceConnection(devList)
     print("Test Done: get img data ")
