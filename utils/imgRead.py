@@ -51,13 +51,10 @@ def convert_Format(
     print('Converting image buffer pixel format to {}'.format(str(pixelFormat)))
     if isinstance(buffer, list):
         print(f'buffer list length ={len(buffer)}')
-        for idx, unit in enumerate(buffer):
-           print(buffer[idx].pixel_format)
-           print(buffer[idx].buffers.xbuffer.hxbuffer.value)
-           BufferFactory.convert(unit, pixelFormat) 
-           print(buffer[idx].pixel_format)
-           print(buffer[idx].buffers.xbuffer.hxbuffer.value)
-        return buffer
+        buffers = []
+        for unit in (buffer):
+           buffers.append(BufferFactory.convert(unit, pixelFormat))
+        return buffers
     
     print('convert single buffer')
     return BufferFactory.convert(buffer, pixelFormat)
