@@ -1,15 +1,15 @@
-from typing import Iterable, Optional, Union
-from arena_api import _device,buffer
+from typing import NoReturn, Optional, Union, Iterable
+import arena_api._device
 from arena_api import enums
 from arena_api.buffer import BufferFactory
 import numpy as np
 
 def configure_some_nodes(
-    device:_device.Device,
+    device:arena_api._device.Device,
     width:Optional[int] = None,
     heigth:Optional[int] = None,
     pixelFormat:Optional[str] = 'Mono8'
-    ):
+    )->NoReturn:
 
     nodemap=device.nodemap
     stream_nodemap=device.tl_stream_nodemap
@@ -43,9 +43,9 @@ def configure_some_nodes(
     nodes['PixelFormat'].value = new_pixel_format
 
 def convert_Format(
-    buffers:Union[buffer._Buffer,Iterable[buffer._Buffer]],
-    pixelFormat:enums=enums.PixelFormat.BGR8
-    )->Union[buffer._Buffer,Iterable[buffer._Buffer]]:
+    buffers:Union[Iterable[arena_api.buffer._Buffer],arena_api.buffer._Buffer],
+    pixelFormat:arena_api.enums=enums.PixelFormat.BGR8
+    )->arena_api.buffer._Buffer:
 
     print('Converting image buffer pixel format to {}'.format(str(pixelFormat)))
     if isinstance(buffers, Iterable):
@@ -56,20 +56,21 @@ def convert_Format(
     return buffers
     
 def read_imgData(
-    device: _device.Device,
-    bufferNum: Optional[int]=1
-    )->Union[np.ndarray,Iterable[np.ndarray]]:
+    device: arena_api._device.Device,
+    bufferNumber : Optional[int]=1
+    )->np:
     
     buffer = None
-    with device.start_stream(bufferNum):
-        print('Stream started with {} buffer'.format(bufferNum))
+    bufferNumber = 30
+    with device.start_stream(bufferNumber):
+        print('Stream started with {} buffer'.format(bufferNumber))
 
         # 'Device.get_buffer()' with no arguments returns only one buffer
-        print('\tGetting {} buffer'.format(bufferNum))
-        device_buffer = device.get_buffer(bufferNum)
+        print('\tGetting {} buffer'.format(bufferNumber))
+        device_buffer = device.get_buffer(bufferNumber)
 
         # Convert to tkinter recognizable pixel format
-        buffers = convert_Format(device_buffer)
+        buffer = convert_Format(device_buffer)
 
         # Requeue to release buffer memory
         print('Requeuing device buffer')
@@ -77,28 +78,14 @@ def read_imgData(
 
     # Create a Numpy array to pass to PIL.Image
     print('Creating 3 dimensional Numpy array')
-    if isinstance(buffers, Iterable):
-        arrayList = []
-        for buffer in buffers:
-            data = buffer.data
-            width = buffer.width
-            height = buffer.height
-
-            np_array = np.asarray(data, dtype=np.uint8)
-            np_array = np_array.reshape(height,width,-1) # -1 is the Channel depth
-            
-            arrayList.append(np_array)
-            BufferFactory.destroy(buffer)
-        return arrayList
-            
-    data = buffers.data
-    width = buffers.width
-    height = buffers.height
+    data = buffer.data
+    width = buffer.width
+    height = buffer.height
 
     np_array = np.asarray(data, dtype=np.uint8)
     np_array = np_array.reshape(height,width,-1) # -1 is the Channel depth
     
-    BufferFactory.destroy(buffers)
+    BufferFactory.destroy(buffer)
 
     return np_array
 
@@ -111,9 +98,9 @@ if __name__ == '__main__' :
 
     myDevice = devList[0]
 
-    configure_some_nodes(myDevice)
+    configure_some_nodes(nodemap=myDevice.nodemap, stream_nodemap=myDevice.tl_stream_nodemap)
     
-    ret = read_imgData(device=myDevice)
+    ret = read_imgData(device= myDevice)
     print(ret.shape)
     print(ret)
 
