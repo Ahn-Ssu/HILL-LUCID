@@ -43,6 +43,18 @@ def configure_some_nodes(
     print(f'Setting \'PixelFormat\' to \'{new_pixel_format}\'')
     nodes['PixelFormat'].value = new_pixel_format
 
+def check_buffer_list_input(buffers_list):
+
+        if len(buffers_list) == 0:
+            raise ValueError(
+                'requeue_buffer argument can not be an empty list')
+
+        for buf in buffers_list:
+            is_instance = isinstance(buf, buffer._Buffer)
+            if not is_instance:
+                raise TypeError('argument list has element(s) that is not '
+                                'of Buffer type')
+
 def convert_Format(
     buffer:Union[buffer._Buffer,list],
     pixelFormat:enums=enums.PixelFormat.BGR8
@@ -50,7 +62,7 @@ def convert_Format(
 
     print('Converting image buffer pixel format to {}'.format(str(pixelFormat)))
     if isinstance(buffer, list):
-        _device.__check_requeue_buffer_list_input(buffer)
+        check_buffer_list_input(buffer)
         print(f'buffer list length ={len(buffer)}')
         buffers = []
         for unit in (buffer):
@@ -92,6 +104,19 @@ def read_imgData(
 def extractReshape(
     target: buffer._Buffer
     ):
+
+    if isinstance(target, list):
+
+        for idx, unit in enumerate(target):
+            data = unit.data
+            width = unit.width
+            height = unit.height
+
+            np_array = np.asanyarray(data, dtype=np.uint8).reshape(height,width, -1)
+            target[idx] = np_array
+
+        return target
+        
 
     data = target.data
     width = target.width
