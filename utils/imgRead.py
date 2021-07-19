@@ -53,8 +53,10 @@ def convert_Format(
         print(f'buffer list length ={len(buffer)}')
         for idx, unit in enumerate(buffer):
            print(buffer[idx].pixel_format)
+           print(buffer[idx].buffers.xbuffer.hxbuffer.value)
            BufferFactory.convert(unit, pixelFormat) 
            print(buffer[idx].pixel_format)
+           print(buffer[idx].buffers.xbuffer.hxbuffer.value)
         return buffer
     
     print('convert single buffer')
@@ -75,7 +77,8 @@ def read_imgData(
 
         # Convert to tkinter recognizable pixel format
         buffer = convert_Format(device_buffer)
-
+        # print(buffer.pixel_format)
+        # print(buffer.buffers.xbuffer.hxbuffer.value)
         # Requeue to release buffer memory
         print('Requeuing device buffer')
         device.requeue_buffer(device_buffer)
