@@ -51,11 +51,12 @@ def convert_Format(
     return BufferFactory.convert(buffer, pixelFormat)
     
 def read_imgData(
-    device: _device.Device
+    device: _device.Device,
+    bufferNumber: Optional[int]=1
     )->np.ndarray:
     
     buffer = None
-    with device.start_stream(1):
+    with device.start_stream(bufferNumber):
         print(f'Stream started with 1 buffer')
 
         # 'Device.get_buffer()' with no arguments returns only one buffer
