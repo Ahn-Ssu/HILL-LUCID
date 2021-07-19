@@ -13,7 +13,7 @@ configure_some_nodes(myDev)
 
 while cv2.waitKey(33)<0:
     img = read_imgData(myDev)
-    if isinstance(img, Iterable):
+    if isinstance(img, list): # numpy is also iterable
         for im in img:
             COG_im = find_centerOfGravity(im)
             cv2.imshow("np to", COG_im)
