@@ -3,6 +3,7 @@ from arena_api import enums, _device, buffer
 from arena_api.buffer import BufferFactory
 import numpy as np
 import arena_api
+from numpy.random.mtrand import f
 
 def configure_some_nodes(
     device:_device.Device,
@@ -43,11 +44,18 @@ def configure_some_nodes(
     nodes['PixelFormat'].value = new_pixel_format
 
 def convert_Format(
-    buffer:buffer._Buffer,
+    buffer:Union[buffer._Buffer,list],
     pixelFormat:enums=enums.PixelFormat.BGR8
-    )->buffer._Buffer:
+    )->Union[buffer._Buffer,list]:
 
     print('Converting image buffer pixel format to {}'.format(str(pixelFormat)))
+    if isinstance(buffer, list):
+        print(f'buffer list length ={len(buffer)}')
+        for idx, unit in enumerate(buffer):
+           buffer[idx] = BufferFactory.convert(unit, pixelFormat) 
+        return buffer
+    
+    print('convert single buffer')
     return BufferFactory.convert(buffer, pixelFormat)
     
 def read_imgData(
@@ -61,7 +69,7 @@ def read_imgData(
 
         # 'Device.get_buffer()' with no arguments returns only one buffer
         print('\tGetting one buffer')
-        device_buffer = device.get_buffer()
+        device_buffer = device.get_buffer(bufferNumber)
 
         # Convert to tkinter recognizable pixel format
         buffer = convert_Format(device_buffer)
@@ -72,12 +80,6 @@ def read_imgData(
 
     # Create a Numpy array to pass to PIL.Image
     print('Creating 3 dimensional Numpy array')
-    # data = buffer.data
-    # width = buffer.width
-    # height = buffer.height
-
-    # np_array = np.asarray(data, dtype=np.uint8)
-    # np_array = np_array.reshape(height,width,-1) # -1 is the Channel depth
     
     # BufferFactory.destroy(buffer)
     np_array = extractReshape(buffer)
