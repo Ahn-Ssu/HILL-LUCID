@@ -50,6 +50,7 @@ def convert_Format(
 
     print('Converting image buffer pixel format to {}'.format(str(pixelFormat)))
     if isinstance(buffer, list):
+        _device.__check_requeue_buffer_list_input(buffer)
         print(f'buffer list length ={len(buffer)}')
         buffers = []
         for unit in (buffer):
@@ -91,6 +92,7 @@ def read_imgData(
 def extractReshape(
     target: buffer._Buffer
     ):
+
     data = target.data
     width = target.width
     height = target.height
