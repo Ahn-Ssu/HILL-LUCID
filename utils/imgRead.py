@@ -52,7 +52,9 @@ def convert_Format(
     if isinstance(buffer, list):
         print(f'buffer list length ={len(buffer)}')
         for idx, unit in enumerate(buffer):
-           buffer[idx] = BufferFactory.convert(unit, pixelFormat) 
+           print(buffer[idx].pixel_format)
+           BufferFactory.convert(unit, pixelFormat) 
+           print(buffer[idx].pixel_format)
         return buffer
     
     print('convert single buffer')
