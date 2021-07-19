@@ -70,16 +70,32 @@ def read_imgData(
 
     # Create a Numpy array to pass to PIL.Image
     print('Creating 3 dimensional Numpy array')
-    data = buffer.data
-    width = buffer.width
-    height = buffer.height
+    # data = buffer.data
+    # width = buffer.width
+    # height = buffer.height
+
+    # np_array = np.asarray(data, dtype=np.uint8)
+    # np_array = np_array.reshape(height,width,-1) # -1 is the Channel depth
+    
+    # BufferFactory.destroy(buffer)
+    np_array = extractReshape(buffer)
+
+    return np_array
+
+def extractReshape(
+    target: buffer._Buffer
+    ):
+    data = target.data
+    width = target.width
+    height = target.height
 
     np_array = np.asarray(data, dtype=np.uint8)
     np_array = np_array.reshape(height,width,-1) # -1 is the Channel depth
     
-    BufferFactory.destroy(buffer)
+    BufferFactory.destroy(target)
 
     return np_array
+    
 
 
 if __name__ == '__main__' :
