@@ -2,9 +2,10 @@ from typing import Union, Optional
 from arena_api import enums, _device, buffer
 from arena_api.buffer import BufferFactory
 import numpy as np
+import arena_api
 
 def configure_some_nodes(
-    device:arena_api._device.Device,
+    device:_device.Device,
     width:Optional[int] = None,
     heigth:Optional[int] = None,
     pixelFormat:Optional[str] = 'Mono8'
@@ -42,16 +43,16 @@ def configure_some_nodes(
     nodes['PixelFormat'].value = new_pixel_format
 
 def convert_Format(
-    buffer:arena_api.buffer._Buffer,
-    pixelFormat:arena_api.enums=enums.PixelFormat.BGR8
-    )->arena_api.buffer._Buffer:
+    buffer:buffer._Buffer,
+    pixelFormat:enums=enums.PixelFormat.BGR8
+    )->buffer._Buffer:
 
     print('Converting image buffer pixel format to {}'.format(str(pixelFormat)))
     return BufferFactory.convert(buffer, pixelFormat)
     
 def read_imgData(
-    device: arena_api._device.Device
-    )->np:
+    device: _device.Device
+    )->np.ndarray:
     
     buffer = None
     with device.start_stream(1):
