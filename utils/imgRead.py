@@ -1,6 +1,5 @@
-from typing import NoReturn, Optional
-import arena_api._device
-from arena_api import enums
+from typing import Union, Optional
+from arena_api import enums, _device, buffer
 from arena_api.buffer import BufferFactory
 import numpy as np
 
@@ -9,7 +8,7 @@ def configure_some_nodes(
     width:Optional[int] = None,
     heigth:Optional[int] = None,
     pixelFormat:Optional[str] = 'Mono8'
-    )->NoReturn:
+    ):
 
     nodemap=device.nodemap
     stream_nodemap=device.tl_stream_nodemap
@@ -91,7 +90,7 @@ if __name__ == '__main__' :
 
     myDevice = devList[0]
 
-    configure_some_nodes(nodemap=myDevice.nodemap, stream_nodemap=myDevice.tl_stream_nodemap)
+    configure_some_nodes(myDevice)
     
     ret = read_imgData(device= myDevice)
     print(ret.shape)
