@@ -1,15 +1,15 @@
-from typing import NoReturn, Optional, Union, Iterable
+from typing import Optional, Union, Iterable
 import arena_api._device
-from arena_api import enums
+from arena_api import enums, buffer, _device
 from arena_api.buffer import BufferFactory
 import numpy as np
 
 def configure_some_nodes(
-    device:arena_api._device.Device,
+    device:_device.Device,
     width:Optional[int] = None,
     heigth:Optional[int] = None,
     pixelFormat:Optional[str] = 'Mono8'
-    )->NoReturn:
+    ):
 
     nodemap=device.nodemap
     stream_nodemap=device.tl_stream_nodemap
@@ -43,9 +43,9 @@ def configure_some_nodes(
     nodes['PixelFormat'].value = new_pixel_format
 
 def convert_Format(
-    buffers:Union[Iterable[arena_api.buffer._Buffer],arena_api.buffer._Buffer],
-    pixelFormat:arena_api.enums=enums.PixelFormat.BGR8
-    )->arena_api.buffer._Buffer:
+    buffers:Union[Iterable[buffer._Buffer],buffer._Buffer],
+    pixelFormat:enums=enums.PixelFormat.BGR8
+    )->buffer._Buffer:
 
     print('Converting image buffer pixel format to {}'.format(str(pixelFormat)))
     if isinstance(buffers, Iterable):
@@ -56,9 +56,9 @@ def convert_Format(
     return buffers
     
 def read_imgData(
-    device: arena_api._device.Device,
+    device: _device.Device,
     bufferNumber : Optional[int]=1
-    )->np:
+    )->np.ndarray:
     
     buffer = None
     bufferNumber = 30
