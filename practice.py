@@ -1,7 +1,7 @@
 import cv2
-from utils.createDeviceConnection import *
+from utils.deviceConnection import *
 from utils.imgRead import *
-from utils.gravityCentor import *
+from utils.imgEditor import *
 
           
 
