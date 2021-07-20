@@ -25,7 +25,7 @@ def stream_buffer(
     **kwargs
     ):
 
-    dsize = kwargs['disze']()
+    dsize = kwargs['dsize']
 
     converted = convert_Format(buffer)
     arr = extract_bufferImg(converted)
@@ -41,7 +41,7 @@ def stream(
     ):
 
     configure_some_nodes(device)
-    handle = callback.register(device, stream_buffer, None)
+    handle = callback.register(device, stream_buffer, dsize=(400,320))
 
     device.start_stream(bufferNumber)
 
