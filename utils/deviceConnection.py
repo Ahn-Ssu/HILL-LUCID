@@ -63,10 +63,10 @@ if __name__ == '__main__':
         print("\t {}: WAIT_ON_EVENT_TIMEOUT_MILLISEC {}".format(idx, device.WAIT_ON_EVENT_TIMEOUT_MILLISEC))
 
         # too long
-        print("\t\t{}: nodemap {}".format(idx, device.nodemap))
-        print("\t\t{}: tl_device_nodemap list length {}".format(idx, device.tl_device_nodemap))
-        print("\t\t{}: tl_interface_nodemap list length{}".format(idx, device.tl_interface_nodemap))
-        print("\t\t{}: tl_stream_nodemap list length{}".format(idx, device.tl_stream_nodemap))
+        print("\t\t{}: nodemap \n{}".format(idx, device.nodemap))
+        print("\t\t{}: tl_device_nodemap list \n{}".format(idx, device.tl_device_nodemap))
+        print("\t\t{}: tl_interface_nodemap list \n{}".format(idx, device.tl_interface_nodemap))
+        print("\t\t{}: tl_stream_nodemap list \n{}".format(idx, device.tl_stream_nodemap))
         print("\t"+"-"*40)
 
     destroy_deviceConnection(deviceList)
