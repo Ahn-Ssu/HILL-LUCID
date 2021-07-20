@@ -1,6 +1,5 @@
 import cv2
 import numpy as np
-
 from arena_api import buffer
 
 def find_centerOfGravity(
@@ -46,7 +45,7 @@ def extract_bufferImg(
             width = unit.width
             height = unit.height
 
-            np_array = np.asanyarray(data, dtype=np.uint8).reshape(height,width, -1)
+            np_array = np.asarray(data, dtype=np.uint8).reshape(height,width, -1)
             target[idx] = np_array
 
         return target

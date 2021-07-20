@@ -25,9 +25,13 @@ def stream_buffer(
     **kwargs
     ):
 
+    dsize = kwargs['disze']()
+
     converted = convert_Format(buffer)
     arr = extract_bufferImg(converted)
 
+    if dsize:
+        arr =  cv2.resize(arr, dsize=dsize)
     cv2.imshow("buffer Stream from device", arr)
     cv2.waitKey(1) # nothing
 
