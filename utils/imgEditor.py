@@ -1,6 +1,8 @@
 import cv2
 import numpy as np
 
+from arena_api import buffer
+
 def find_centerOfGravity(
     srcImg : np.ndarray
     )-> np.ndarray:
@@ -32,3 +34,29 @@ def find_centerOfGravity(
         cv2.drawContours(srcImg, [i], 0, (0, 0, 255), 2)
 
     return srcImg
+
+def extract_bufferImg(
+    target: buffer._Buffer
+    ):
+
+    if isinstance(target, list):
+
+        for idx, unit in enumerate(target):
+            data = unit.data
+            width = unit.width
+            height = unit.height
+
+            np_array = np.asanyarray(data, dtype=np.uint8).reshape(height,width, -1)
+            target[idx] = np_array
+
+        return target
+        
+
+    data = target.data
+    width = target.width
+    height = target.height
+
+    np_array = np.asarray(data, dtype=np.uint8)
+    np_array = np_array.reshape(height,width,-1) # -1 is the Channel depth
+    
+    return np_array

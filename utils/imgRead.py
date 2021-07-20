@@ -1,49 +1,14 @@
+import numpy as np
 from typing import Union, Optional
 from arena_api import enums, _device, buffer
 from arena_api.buffer import BufferFactory
-import numpy as np
-import arena_api
-from numpy.random.mtrand import f
 
-def configure_some_nodes(
-    device:_device.Device,
-    width:Optional[int] = None,
-    heigth:Optional[int] = None,
-    pixelFormat:Optional[str] = 'Mono8'
-    ):
+from setting import *
+from imgEditor import *
 
-    nodemap=device.nodemap
-    stream_nodemap=device.tl_stream_nodemap
 
-    # Enable stream auto negotiate packet size
-    stream_nodemap['StreamAutoNegotiatePacketSize'].value = True
 
-    # Enable stream packet resend
-    stream_nodemap['StreamPacketResendEnable'].value = True
-
-    # Width and height --------------------------------------------------------
-    print('Getting \'Width\', \'Height\', and \'PixelFormat\' Nodes')
-    nodes = nodemap.get_node(['Width', 'Height', 'PixelFormat'])
-
-    # Set width and height to their max values
-    print('Setting \'Width\' and \'Height\' Nodes value to their '
-          'values(default:max')
-    if width :
-        nodes['Width'].value = width
-    else:
-        nodes['Width'].value = nodes['Width'].max
-
-    if heigth:
-        nodes['Height'].value = heigth
-    else:
-        nodes['Height'].value = nodes['Height'].max
-
-    # Pixel format ------------------------------------------------------------
-    new_pixel_format = pixelFormat
-    print(f'Setting \'PixelFormat\' to \'{new_pixel_format}\'')
-    nodes['PixelFormat'].value = new_pixel_format
-
-def check_buffer_list_input(buffers_list):
+def check_buffer_list_input(buffers_list:list):
 
         if len(buffers_list) == 0:
             raise ValueError(
@@ -60,7 +25,7 @@ def convert_Format(
     pixelFormat:enums=enums.PixelFormat.BGR8
     )->Union[buffer._Buffer,list]:
 
-    print('Converting image buffer pixel format to {}'.format(str(pixelFormat)))
+    print(f'Converting image buffer pixel format to {str(pixelFormat)}')
     if isinstance(buffer, list):
         check_buffer_list_input(buffer)
         print(f'buffer list length ={len(buffer)}')
@@ -87,8 +52,7 @@ def read_imgData(
 
         # Convert to tkinter recognizable pixel format
         buffer = convert_Format(device_buffer)
-        # print(buffer.pixel_format)
-        # print(buffer.buffers.xbuffer.hxbuffer.value)
+
         # Requeue to release buffer memory
         print('Requeuing device buffer')
         device.requeue_buffer(device_buffer)
@@ -97,43 +61,16 @@ def read_imgData(
     print('Creating 3 dimensional Numpy array')
     
     # BufferFactory.destroy(buffer)
-    np_array = extractReshape(buffer)
-
-    return np_array
-
-def extractReshape(
-    target: buffer._Buffer
-    ):
-
-    if isinstance(target, list):
-
-        for idx, unit in enumerate(target):
-            data = unit.data
-            width = unit.width
-            height = unit.height
-
-            np_array = np.asanyarray(data, dtype=np.uint8).reshape(height,width, -1)
-            target[idx] = np_array
-
-        return target
-        
-
-    data = target.data
-    width = target.width
-    height = target.height
-
-    np_array = np.asarray(data, dtype=np.uint8)
-    np_array = np_array.reshape(height,width,-1) # -1 is the Channel depth
-    
-    BufferFactory.destroy(target)
+    np_array = extract_bufferImg(buffer)
+    BufferFactory.destroy(buffer)
 
     return np_array
     
-
 
 if __name__ == '__main__' :
     print("Code Test: get img data")
-    from createDeviceConnection import *
+    from deviceConnection import *
+    from pprint import pprint
 
     devList = create_devices_with_tries()
 
@@ -142,10 +79,10 @@ if __name__ == '__main__' :
     configure_some_nodes(myDevice)
     
     ret = read_imgData(device= myDevice)
-    print(ret.shape)
-    print(ret)
+    print(f'Img Data Shape == {ret.shape}')
+    pprint(ret,indent=2)
 
-
+    cv2.imshow("Single Shot(Buffer) Img Test", ret)
 
     destroy_deviceConnection(devList)
     print("Test Done: get img data ")

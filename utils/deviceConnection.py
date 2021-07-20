@@ -1,10 +1,10 @@
 import time
-import arena_api
-from typing import Union, Iterable, NoReturn
+
+from typing import Union, Iterable
 from arena_api.system import system
+from arena_api import _device
 
-
-def create_devices_with_tries() -> Iterable[arena_api._device.Device]:
+def create_devices_with_tries() -> Iterable[_device.Device]:
     """
     This function waits for the user to connect a device before raising
     an exception
@@ -23,7 +23,7 @@ def create_devices_with_tries() -> Iterable[arena_api._device.Device]:
             for sec_count in range(sleep_time_secs):
                 time.sleep(1)
                 print(f'{sec_count + 1 } seconds passed ',
-                      '∎' * sec_count, end='\r')
+                      '∎∎∎' * sec_count, end='\r')
             tries += 1
         else:
             print(f'Created {len(devices)} device(s)')
@@ -32,21 +32,22 @@ def create_devices_with_tries() -> Iterable[arena_api._device.Device]:
         raise Exception(f'No device found! Please connect a device and run '
                         f'the example again.')
 
-
-def destroy_deviceConnection(device: Union[Iterable[arena_api._device.Device],arena_api._device.Device]):
+def destroy_deviceConnection(
+    device: Union[Iterable[_device.Device],_device.Device]
+    ):
     # for arena_api Device instance
-    if isinstance(device, arena_api._device.Device) : # device in list
+    if isinstance(device, _device.Device) : # device in list
         system.destroy_device(device)
     # for arena_api Device instance in list (from create_device API)
     elif isinstance(device, list):
         for dev in device:
-            if isinstance(dev, arena_api._device.Device):
+            if isinstance(dev, _device.Device):
                 system.destroy_device(dev)
     else:
         raise Exception(f'No device found! Please assign a device and run '
                         f'the function again.')
     
-    system.destroy_device() # for computer RSS 
+    system.destroy_device() # for safety
     print(f"destroyed the device. We've recovered the resources.")
 
 
