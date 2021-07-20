@@ -1,3 +1,7 @@
+import os
+import sys
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+
 import numpy as np
 from typing import Union, Optional
 from arena_api import enums, _device, buffer
@@ -52,7 +56,6 @@ def read_imgData(
 
         # Convert to tkinter recognizable pixel format
         buffer = convert_Format(device_buffer)
-
         # Requeue to release buffer memory
         print('Requeuing device buffer')
         device.requeue_buffer(device_buffer)
