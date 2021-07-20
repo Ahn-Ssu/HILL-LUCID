@@ -44,7 +44,7 @@ def stream(
     input("\tEnter to exit stream")
     device.stop_stream()
     callback.deregister(handle)
-    destroy_deviceConnection(device)
+    # destroy_deviceConnection(device) 중복
 
 if __name__ == '__main__':
     print('Stream Example start')

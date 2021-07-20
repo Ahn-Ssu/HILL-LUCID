@@ -56,7 +56,7 @@ if __name__ == '__main__':
     print('\nWARNING:\nTHIS EXAMPLE MIGHT CHANGE THE DEVICE(S) SETTINGS!')
     print('\nExample started\n')
 
-    from createDeviceConnection import create_devices_with_tries, destroy_deviceConnection
+    from deviceConnection import create_devices_with_tries, destroy_deviceConnection
     devList = create_devices_with_tries()
 
     set_default(devList[0])
