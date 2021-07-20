@@ -69,5 +69,23 @@ if __name__ == '__main__':
         print("{}: tl_stream_nodemap list \n\t{}".format(idx, device.tl_stream_nodemap))
         print("\t"+"-"*40)
 
+    target = device.nodemap.feature_names
+    print(type(target))
+    print(target)
+
+    for feature in target[:int(len(target)/2)]:
+        print(device.nodemap[feature])
+        print()
+        
+
+
     destroy_deviceConnection(deviceList)
     print("\nCode Test: Create and Destroy clear\n")
+
+    # system.tl_system_nodemap
+    # system.tl_system_nodemap
+    # system.tl_interface_nodemap
+    # device.tl_device_nodemap
+    # device.tl_stream_nodemap
+    # device.tl_interface_nodemap
+    # device.nodemap
