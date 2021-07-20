@@ -1,6 +1,5 @@
 import os
 import sys
-
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
 from utils.setting import configure_some_nodes
@@ -15,7 +14,7 @@ from arena_api.callback import callback, callback_function
 
 def convert_Format(
     buffer:buffer._Buffer,
-    format:enums.PixelFormat.BGR8):
+    format:enums.PixelFormat=enums.PixelFormat.BGR8):
 
     return BufferFactory.convert(buffer, format)
 
