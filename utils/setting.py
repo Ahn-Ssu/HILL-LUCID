@@ -1,6 +1,5 @@
 import arena_api
-from arena_api import _device, buffer
-from arena_api.system import system
+from arena_api import _device
 from typing import Optional
 
 def set_default(device : arena_api._device.Device):

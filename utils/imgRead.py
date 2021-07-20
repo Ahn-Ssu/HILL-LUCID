@@ -2,13 +2,14 @@ import os
 import sys
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
+from utils.setting import configure_some_nodes
+from utils.imgEditor import extract_bufferImg
+
 import numpy as np
 from typing import Union, Optional
 from arena_api import enums, _device, buffer
 from arena_api.buffer import BufferFactory
 
-from setting import *
-from imgEditor import *
 
 
 
@@ -74,6 +75,7 @@ if __name__ == '__main__' :
     print("Code Test: get img data")
     from deviceConnection import *
     from pprint import pprint
+    import cv2
 
     devList = create_devices_with_tries()
 
