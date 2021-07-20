@@ -50,7 +50,6 @@ def destroy_deviceConnection(
     system.destroy_device() # for safety
     print(f"destroyed the device. We've recovered the resources.")
 
-
 if __name__ == '__main__':
     # destroy_deviceConnection() # empty test
     deviceList = create_devices_with_tries()
